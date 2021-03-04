@@ -2,6 +2,8 @@ import numpy as np
 import imageio
 import math
 
+TEST_NUM = 5    # the number of test images
+
 def rgb2gray(rgb):
     return np.dot(rgb[..., :3], [0.299, 0.587, 0.114]).astype(np.uint8)
 
@@ -76,11 +78,17 @@ def show_hough_line(img, accumulator, thetas, rhos, save_path=None):
         plt.savefig(save_path, bbox_inches='tight')
     plt.show()
 
-
-if __name__ == '__main__':
-    imgpath = 'imgs/binary_crosses.png'
+def hough_image_output(imgpath, save_path):
     img = imageio.imread(imgpath)
     if img.ndim == 3:
         img = rgb2gray(img)
     accumulator, thetas, rhos = hough_line(img)
-    show_hough_line(img, accumulator, save_path='imgs/output.png')
+    show_hough_line(img, accumulator, thetas, rhos, save_path)
+
+if __name__ == '__main__':
+    for img_num in range(0,TEST_NUM):
+        imgpath = 'imgs/tests/test_img'+str(img_num)+'.png'
+        save_path ='imgs/results/output'+str(img_num)+'.png'
+        hough_image_output(imgpath, save_path)
+    
+    
